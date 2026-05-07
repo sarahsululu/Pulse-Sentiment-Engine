@@ -1,4 +1,6 @@
-# SentinelVibe 🛡️ | AI-Powered Brand Sentiment Dashboard
+# SentinelVibe 🛡️ 
+[🚀 View Live Demo](https://pulse-sentiment-engine.vercel.app)
+## | AI-Powered Brand Sentiment Dashboard
 
 SentinelVibe is a high-fidelity sentiment analysis dashboard designed to monitor brand reputation in real-time. It bridges the gap between qualitative feedback (social media mentions) and quantitative data (analytics) using a custom heuristic analysis engine.
 

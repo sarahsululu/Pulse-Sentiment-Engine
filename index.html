@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelVibe | AI Brand Monitor</title>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-12">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header Section -->
+        <nav class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-cyan-400 rounded-xl rotate-12 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <span class="text-white font-black -rotate-12">S</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight leading-none">Sentinel<span class="text-blue-500">Vibe</span></h1>
+                    <p class="text-[10px] text-slate-500 font-mono mt-1 uppercase tracking-widest">AI Sentiment Analysis Engine v1.0</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button id="fetch-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 px-8 rounded-xl transition-all active:scale-95 shadow-lg shadow-blue-600/20">
+                    Run Network Scan
+                </button>
+            </div>
+        </nav>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 backdrop-blur-sm shadow-xl">
+                <div class="flex justify-between items-start">
+                    <p class="text-xs uppercase tracking-widest text-slate-500 font-semibold mb-1">Positive Vibe</p>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                </div>
+                <h3 class="text-4xl font-bold text-emerald-400" id="pos-count">0</h3>
+            </div>
+            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 backdrop-blur-sm shadow-xl">
+                <p class="text-xs uppercase tracking-widest text-slate-500 font-semibold mb-1">Neutral Feed</p>
+                <h3 class="text-4xl font-bold text-slate-300" id="neu-count">0</h3>
+            </div>
+            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 backdrop-blur-sm shadow-xl">
+                <p class="text-xs uppercase tracking-widest text-slate-500 font-semibold mb-1">Critical Alerts</p>
+                <h3 class="text-4xl font-bold text-rose-500" id="neg-count">0</h3>
+            </div>
+        </section>
+
+        <section class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-xl mb-10">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                <h2 class="font-semibold text-xl tracking-tight">Test the Analysis Engine</h2>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" id="custom-mention-input" 
+                       placeholder="Type something nice or critical about SentinelVibe..." 
+                       class="flex-grow bg-slate-950 border border-slate-700/50 rounded-xl px-5 py-3.5 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-sans">
+                
+                <button id="add-mention-btn" 
+                        class="bg-slate-800 hover:bg-slate-700/70 text-slate-100 font-bold py-3.5 px-8 rounded-xl transition-all active:scale-95 whitespace-nowrap flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    Inject Mention
+                </button>
+            </div>
+            <p class="text-xs text-slate-600 mt-3 font-mono">The engine uses keyphrase analysis to determine sentiment (e.g., uses words like 'great', 'fast' vs 'slow', 'bad').</p>
+        </section>
+
+        <div class="bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
+            <div class="p-6 border-b border-slate-800 flex flex-col md:flex-row justify-between items-center bg-slate-900/50 gap-4">
+                <h2 class="font-semibold text-lg hidden md:block text-slate-400 font-mono">LIVE_STREAM</h2>
+                <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 w-full md:w-auto">
+                    <button onclick="filterFeed('all')" class="flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold transition-colors hover:bg-slate-800">ALL</button>
+                    <button onclick="filterFeed('positive')" class="flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold text-emerald-500 transition-colors hover:bg-slate-800">POS</button>
+                    <button onclick="filterFeed('negative')" class="flex-1 md:flex-none px-4 py-1.5 rounded-lg text-xs font-bold text-rose-500 transition-colors hover:bg-slate-800">NEG</button>
+                </div>
+            </div>
+            
+            <div id="feed" class="min-h-[400px] max-h-[600px] overflow-y-auto">
+                <div id="placeholder" class="p-20 text-center">
+                    <div class="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-4 hidden" id="spinner"></div>
+                    <p class="text-slate-600 italic">Initialize scan to begin brand sentiment mapping...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
